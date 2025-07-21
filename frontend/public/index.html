@@ -9,3 +9,11 @@
   <p>Welcome! This is the starting point of our Agentic AI Hackathon project.</p>
 </body>
 </html>
+
+<script>
+  fetch("http://localhost:8000/")
+    .then(res => res.json())
+    .then(data => console.log("Backend:", data))
+    .catch(error => console.error("Backend connection error:", error));
+</script>
+  
