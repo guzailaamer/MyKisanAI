@@ -1,0 +1,186 @@
+
+# MyKisanAI - Context Prompt
+
+You are assisting me in building a production-ready MVP called **My Kisan AI** — a voice-first, multimodal Agentic AI assistant designed for Indian farmers. The goal is to demonstrate a working prototype within a 30-hour hackathon.
+
+---
+
+### 🎯 Objective (What We’re Building):
+
+The app should act as a **personal agronomist and financial advisor** for small-scale farmers in rural India. It must run as a **PWA** on basic smartphones and work in local languages.
+
+The MVP must deliver the following core functionality:
+
+1. **Crop Diagnosis**: Accept an image of diseased crops, analyze using Gemini Vision, and return treatment suggestions via voice/text.
+2. **Market Advice**: Accept a voice query like “Should I sell tomatoes today?”, fetch mandi price trends via APIs, summarize with Gemini Pro, and respond.
+3. **Subsidy Guidance**: Interpret natural language questions about government schemes (e.g., “Can I get subsidy for drip irrigation?”), retrieve context from embedded content (PDFs or scraped web pages), and return clear eligibility criteria and links.
+4. **Voice-First Interaction**: Full STT → AI → TTS loop. Support Kannada, Hindi, and English.
+5. **User Memory**: Store query history and user profile to personalize advice.
+
+---
+
+### 💡 MVP Constraints:
+
+- Low-bandwidth, entry-level smartphone usage
+- No mobile app installation — must work via browser
+- Google technologies only (Firebase, Vertex AI, Gemini, Firestore, Cloud Functions)
+- Deliver within 30 hours
+
+---
+
+### 🧱 Architecture:
+
+### 1. Frontend:
+
+- Firebase Hosting (PWA)
+- Vanilla HTML/CSS/JS (or React if needed)
+- Upload image & record voice UI
+- Fetch from backend via REST
+
+### 2. Backend:
+
+- Python (FastAPI) served with Uvicorn locally
+- Core endpoints:
+    - `/diagnose_crop` → handles image input + Gemini Vision
+    - `/market_advice` → fetches API data + Gemini summarization
+    - `/subsidy_query` → RAG over docs + Gemini answer
+- Modular tools in `/tools/` handle each task
+- Deployed to Cloud Run or GCP Function (optional)
+
+### 3. AI Services (All Google):
+
+- Vertex AI Gemini Pro → Language understanding
+- Vertex AI Gemini Vision → Image-based disease detection
+- Vertex AI STT + TTS → Voice-based I/O
+- Firestore → Stores memory: user profile, crop history, interactions
+
+---
+
+### 🔁 Agentic Loop (How It Works Internally):
+
+### 🔹 Perception:
+
+- Accepts image (via form) or voice (via mic + STT)
+- Parses user intent using Gemini Pro
+
+### 🔹 Planning:
+
+- Decides which tool to invoke based on parsed query
+- Gathers context (e.g., location, past crop data)
+
+### 🔹 Action:
+
+- Calls `crop_diagnosis_tool.py`, `market_advisory_tool.py`, or `scheme_navigator_tool.py`
+- Generates Gemini-powered response (voice + text)
+
+### 🔹 Memory:
+
+- Logs interaction in Firestore (query, timestamp, type, crop, user_id)
+
+### 🔹 Feedback:
+
+- Accepts thumbs up/down or correction and refines memory (not in MVP but scaffolded)
+
+---
+
+### 📂 Folder Structure:
+
+my-kisan-ai/
+
+├── firebase.json
+
+├── .firebaserc
+
+├── firestore.rules
+
+│
+
+├── frontend/
+
+│   └── public/
+
+│       └── index.html (PWA UI)
+
+│
+
+├── backend/
+
+│   ├── main.py (FastAPI app)
+
+│   ├── requirements.txt
+
+│   └── tools/
+
+│       ├──
+
+**init**
+
+.py
+
+│       ├── crop_diagnosis_tool.py     # Gemini Vision
+
+│       ├── market_advisory_tool.py    # Market API + LLM
+
+│       ├── scheme_navigator_tool.py   # RAG + Gemini
+
+│       └── tts_stt_tool.py            # STT + TTS
+
+---
+
+### 🧠 Responsibilities for the Agent:
+
+Help me build code for:
+
+- Modular FastAPI endpoints
+- Gemini API integration (Vision, Pro)
+- Voice I/O with STT + TTS (Vertex AI)
+- Fetch + summarize real-time market data
+- Basic RAG for subsidy queries using scraped PDFs or docs
+- Firestore logging of user sessions
+- Feedback mechanism (scaffolded)
+
+---
+
+### 🔁 Example Interaction Flow:
+
+1. User opens PWA → uploads photo or speaks in Kannada.
+2. Frontend sends image or STT transcript to backend.
+3. Backend identifies intent, calls relevant Gemini model/tool.
+4. Backend returns advice → frontend shows text + plays TTS audio.
+5. Interaction is logged in Firestore with timestamp + context.
+
+---
+
+### 🧩 Tech Stack (Google Ecosystem):
+
+| Layer | Technology |
+| --- | --- |
+| Frontend | Firebase Hosting, JS/HTML |
+| Backend | FastAPI + Uvicorn |
+| Database | Firebase Firestore |
+| Hosting | Firebase / Cloud Run |
+| AI Agent | Vertex AI Agent Builder (or manual loop) |
+| Vision Model | Gemini Multimodal (Image) |
+| Language Model | Gemini Pro |
+| STT / TTS | Vertex AI Speech Services |
+| Auth (optional) | Firebase Auth |
+
+---
+
+### ✅ Project Status:
+
+- Firebase Hosting live
+- Frontend → Backend working
+- FastAPI routes scaffolded
+- Gemini & Vision integration pending
+
+---
+
+Act as a helpful co-developer that can generate:
+
+- Backend tools
+- Gemini API calls
+- Firestore write/read snippets
+- STT/TTS logic
+- Frontend wiring
+All modular and MVP-focused.
