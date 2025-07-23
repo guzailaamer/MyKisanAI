@@ -5,10 +5,10 @@ from typing import List, Optional
 from fastapi import UploadFile, File, Form
 
 # ─── Import tool stubs ──────────────────────────────────────────────────────────
-from backend.tools.crop_diagnosis_tool import diagnose_crop
-from backend.tools.market_advisory_tool import get_market_trend
-from backend.tools.scheme_navigator_tool import answer_scheme_query
-from backend.tools.tts_stt_tool import synthesize_speech, transcribe_audio
+from tools.crop_diagnosis_tool import diagnose_crop
+from tools.market_advisory_tool import get_market_trend
+from tools.scheme_navigator_tool import answer_scheme_query
+from tools.tts_stt_tool import synthesize_speech, transcribe_audio
 
 
 app = FastAPI()
