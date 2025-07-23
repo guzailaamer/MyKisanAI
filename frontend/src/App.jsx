@@ -1,17 +1,9 @@
-// src/App.jsx
 import React, { useState } from "react";
-import {
-  diagnoseCrop,
-  marketAdvice,
-  subsidyQuery,
-  tts,
-  stt,
-} from "./api";
 
 function App() {
   // State for each form and response
   const [cropImage, setCropImage] = useState(null);
-  const [cropResult, setCropResult] = useState(null);
+  const [cropResult, setCropResult] = useState(null); // This will now store { diagnosis: "..." }
 
   const [marketCrop, setMarketCrop] = useState("");
   const [marketLocation, setMarketLocation] = useState("");
@@ -27,38 +19,116 @@ function App() {
   const [sttAudio, setSttAudio] = useState(null);
   const [sttResult, setSttResult] = useState(null);
 
+  const [query, setQuery] = useState(""); // Added state for the query input
+
   // Handlers
   const handleDiagnose = async (e) => {
     e.preventDefault();
-    if (!cropImage) return;
-    const res = await diagnoseCrop(cropImage);
-    setCropResult(res);
+    if (!cropImage || !query) {
+      alert("Please select an image and enter a query.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", cropImage); // Attach the image file to FormData
+    formData.append("query", query); // Attach the query to FormData
+
+    try {
+      // Send the image and query to the backend API (make sure the URL is correct)
+      // For local development, it's often good to use a full URL like:
+      // const res = await fetch("http://localhost:8000/diagnose_crop", {
+      const res = await fetch("/diagnose_crop", { // This works if Vite is proxying correctly or if backend is on same origin
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || "Failed to upload image");
+      }
+
+      const data = await res.json();
+      setCropResult(data); // Set the response from the backend
+    } catch (err) {
+      console.error("Error during image diagnosis:", err);
+      setCropResult({ error: err.message }); // Display error in UI
+    }
   };
 
   const handleMarket = async (e) => {
     e.preventDefault();
-    const res = await marketAdvice(marketCrop, marketLocation);
-    setMarketResult(res);
+    // Assuming you have `marketAdvice` function defined elsewhere or will fetch directly
+    // const res = await marketAdvice(marketCrop, marketLocation);
+    try {
+      const res = await fetch("/market_advice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ crop_name: marketCrop, location: marketLocation }),
+      });
+      const data = await res.json();
+      setMarketResult(data);
+    } catch (err) {
+      console.error("Error during market advice:", err);
+      setMarketResult({ error: err.message });
+    }
   };
 
   const handleSubsidy = async (e) => {
     e.preventDefault();
-    const res = await subsidyQuery(subsidyQuestion);
-    setSubsidyResult(res);
+    // Assuming you have `subsidyQuery` function defined elsewhere or will fetch directly
+    // const res = await subsidyQuery(subsidyQuestion);
+    try {
+      const res = await fetch("/subsidy_query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: subsidyQuestion }),
+      });
+      const data = await res.json();
+      setSubsidyResult(data);
+    } catch (err) {
+      console.error("Error during subsidy query:", err);
+      setSubsidyResult({ error: err.message });
+    }
   };
 
   const handleTTS = async (e) => {
     e.preventDefault();
-    const res = await tts(ttsText, ttsLang);
-    setTtsResult(res);
+    // Assuming you have `tts` function defined elsewhere or will fetch directly
+    // const res = await tts(ttsText, ttsLang);
+    try {
+      const res = await fetch("/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: ttsText, language: ttsLang }),
+      });
+      const data = await res.json();
+      setTtsResult(data);
+    } catch (err) {
+      console.error("Error during TTS:", err);
+      setTtsResult({ error: err.message });
+    }
   };
 
   const handleSTT = async (e) => {
     e.preventDefault();
     if (!sttAudio) return;
-    const res = await stt(sttAudio);
-    setSttResult(res);
+    // Assuming you have `stt` function defined elsewhere or will fetch directly
+    // const res = await stt(sttAudio);
+    const formData = new FormData();
+    formData.append("audio", sttAudio);
+    try {
+      const res = await fetch("/stt", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      setSttResult(data);
+    } catch (err) {
+      console.error("Error during STT:", err);
+      setSttResult({ error: err.message });
+    }
   };
+
 
   return (
     <div style={{ maxWidth: 600, margin: "2rem auto", fontFamily: "sans-serif" }}>
@@ -73,9 +143,28 @@ function App() {
             accept="image/*"
             onChange={(e) => setCropImage(e.target.files[0])}
           />
+          <input
+            type="text"
+            placeholder="Enter query about the crop"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)} // Bind the query state
+            required
+          />
           <button type="submit">Diagnose</button>
         </form>
-        {cropResult && <pre>{JSON.stringify(cropResult, null, 2)}</pre>}
+        {/* Display the diagnosis text directly or a JSON string if you prefer */}
+        {cropResult && (
+          <div>
+            <h3>Diagnosis Result:</h3>
+            {cropResult.error ? (
+              <p style={{ color: 'red' }}>Error: {cropResult.error}</p>
+            ) : (
+              <p>{cropResult.diagnosis}</p> // Display the extracted diagnosis text
+            )}
+            {/* Optional: For debugging, you can still stringify the whole object */}
+            {/* <pre>{JSON.stringify(cropResult, null, 2)}</pre> */}
+          </div>
+        )}
       </section>
 
       {/* Market Advisory */}

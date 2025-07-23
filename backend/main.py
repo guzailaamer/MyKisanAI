@@ -2,7 +2,9 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-from fastapi import UploadFile, File, Form
+from io import BytesIO
+from dotenv import load_dotenv
+import os
 
 # ─── Import tool stubs ──────────────────────────────────────────────────────────
 from tools.crop_diagnosis_tool import diagnose_crop
@@ -10,6 +12,13 @@ from tools.market_advisory_tool import get_market_trend
 from tools.scheme_navigator_tool import answer_scheme_query
 from tools.tts_stt_tool import synthesize_speech, transcribe_audio
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the API key from environment variables
+API_KEY = os.getenv("API_KEY")
+if not API_KEY:
+    raise ValueError("API_KEY not found in environment variables")
 
 app = FastAPI()
 
@@ -44,12 +53,20 @@ def health_check():
 
 # 1️⃣ Crop Disease Diagnosis  ----------------------------------------------------
 @app.post("/diagnose_crop")
-async def diagnose_crop_endpoint(image: UploadFile = File(...)):
+async def diagnose_crop_endpoint(image: UploadFile = File(...), query: str = ""):
+    # Ensure the uploaded file is an image (JPEG or PNG)
     if image.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=415, detail="Unsupported file type")
+
+    # Read the image bytes
     img_bytes = await image.read()
-    diagnosis = diagnose_crop(img_bytes)
-    return diagnosis
+
+    try:
+        # Call the diagnose_crop function with image bytes and the query
+        diagnosis = diagnose_crop(img_bytes, query, API_KEY)
+        return diagnosis
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
 
 # 2️⃣ Market Advisory  -----------------------------------------------------------
 @app.post("/market_advice")
