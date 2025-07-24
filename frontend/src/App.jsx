@@ -15,6 +15,8 @@ function App() {
   const [ttsText, setTtsText] = useState("");
   const [ttsLang, setTtsLang] = useState("en");
   const [ttsResult, setTtsResult] = useState(null);
+  const [ttsTranslate, setTtsTranslate] = useState(false);
+  const [ttsTargetLang, setTtsTargetLang] = useState("");
 
   const [sttAudio, setSttAudio] = useState(null);
   const [sttResult, setSttResult] = useState(null);
@@ -93,13 +95,26 @@ function App() {
 
   const handleTTS = async (e) => {
     e.preventDefault();
-    // Assuming you have `tts` function defined elsewhere or will fetch directly
-    // const res = await tts(ttsText, ttsLang);
+    let language = "en";
+    let translate = false;
+    let source_lang = "en";
+    let target_lang = null;
+    if (ttsTranslate && ttsTargetLang) {
+      translate = true;
+      target_lang = ttsTargetLang;
+      language = ttsTargetLang + "-IN";
+    }
     try {
       const res = await fetch("/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: ttsText, language: ttsLang }),
+        body: JSON.stringify({
+          text: ttsText,
+          language,
+          translate,
+          source_lang,
+          target_lang
+        }),
       });
       const data = await res.json();
       setTtsResult(data);
@@ -216,20 +231,44 @@ function App() {
             onChange={(e) => setTtsText(e.target.value)}
             required
           />
-          <input
-            type="text"
-            placeholder="Language (default: en)"
-            value={ttsLang}
-            onChange={(e) => setTtsLang(e.target.value)}
-          />
+          <div style={{ margin: '0.5em 0' }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={ttsTranslate}
+                onChange={e => {
+                  setTtsTranslate(e.target.checked);
+                  if (!e.target.checked) setTtsTargetLang("");
+                }}
+              />
+              Translate to:
+            </label>
+            {ttsTranslate && (
+              <select
+                value={ttsTargetLang}
+                onChange={e => setTtsTargetLang(e.target.value)}
+                required
+                style={{ marginLeft: 8 }}
+              >
+                <option value="">Select language</option>
+                <option value="hi">Hindi</option>
+                <option value="te">Telugu</option>
+                <option value="kn">Kannada</option>
+              </select>
+            )}
+          </div>
           <button type="submit">Synthesize</button>
         </form>
         {ttsResult && (
           <div>
-            <pre>{JSON.stringify(ttsResult, null, 2)}</pre>
-            {/* If your backend returns audio as a base64 string, you can play it like this: */}
+            {/* Remove debug output: <pre>{JSON.stringify(ttsResult, null, 2)}</pre> */}
             {ttsResult.audio && (
               <audio controls src={`data:audio/wav;base64,${ttsResult.audio}`} />
+            )}
+            {ttsResult.translated_text && (
+              <div style={{ marginTop: '0.5em' }}>
+                <strong>Translated Text:</strong> {ttsResult.translated_text}
+              </div>
             )}
           </div>
         )}

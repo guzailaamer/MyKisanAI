@@ -5,6 +5,7 @@ from typing import List, Optional
 from io import BytesIO
 from dotenv import load_dotenv
 import os
+import base64
 
 # ─── Import tool stubs ──────────────────────────────────────────────────────────
 from tools.crop_diagnosis_tool import diagnose_crop
@@ -42,6 +43,9 @@ class SubsidyQuery(BaseModel):
 class TTSRequest(BaseModel):
     text: str
     language: str = "en"
+    translate: bool = False
+    source_lang: str = "en"
+    target_lang: str = None
 
 class STTResponse(BaseModel):
     transcript: str
@@ -83,8 +87,15 @@ def subsidy_query_endpoint(query: SubsidyQuery):
 # 4️⃣ Text‑to‑Speech (stub) ------------------------------------------------------
 @app.post("/tts")
 def tts_endpoint(req: TTSRequest):
-    audio_stub = synthesize_speech(req.text, req.language)
-    return {"audio": audio_stub}
+    result = synthesize_speech(
+        req.text,
+        req.language,
+        translate=req.translate,
+        source_lang=req.source_lang,
+        target_lang=req.target_lang
+    )
+    audio_base64 = base64.b64encode(result["audio"]).decode("utf-8")
+    return {"audio": audio_base64, "translated_text": result["translated_text"]}
 
 # 5️⃣ Speech‑to‑Text (stub) ------------------------------------------------------
 @app.post("/stt", response_model=STTResponse)
