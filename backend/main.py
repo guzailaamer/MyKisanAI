@@ -17,7 +17,7 @@ from tools.tts_stt_tool import synthesize_speech, transcribe_audio
 load_dotenv()
 
 # Get the API key from environment variables
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
     raise ValueError("API_KEY not found in environment variables")
 

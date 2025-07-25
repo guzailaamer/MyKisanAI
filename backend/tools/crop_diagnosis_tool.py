@@ -12,6 +12,7 @@ import base64
 import requests
 import json
 
+
 def diagnose_crop(img_bytes, query, api_key):
     # Encode image bytes to base64
     image_b64 = base64.b64encode(img_bytes).decode('utf-8')

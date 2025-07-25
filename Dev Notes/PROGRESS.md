@@ -7,8 +7,9 @@ This file summarizes the current high-level progress of the MyKisanAI project. U
 ## ✅ Completed Phases
 
 - **Project Setup:**
-  - Repository initialized, backend structure created.
-  - FastAPI chosen as backend framework.
+  - Repository initialized, backend and frontend structure created.
+  - FastAPI chosen as backend framework (in `backend/`).
+  - React + Vite app set up in `frontend/`.
   - CORS configured for frontend-backend communication.
 
 - **Backend API Bootstrapping:**
@@ -26,10 +27,20 @@ This file summarizes the current high-level progress of the MyKisanAI project. U
     - `/tts` (text-to-speech)
     - `/stt` (speech-to-text)
 
+- **Frontend-Backend Integration:**
+  - Frontend API utility (`src/api.js`) calls backend endpoints.
+  - Local development uses `http://localhost:8000` as backend base URL.
+
+- **Crop Diagnosis (Gemini Vision):**
+  - UI allows users to upload crop images for diagnosis.
+  - Backend route `/diagnose_crop` accepts image and forwards to Gemini Vision API (integration pending).
+  - Response structure defined for disease identification and remedy suggestions.
+  - Frontend displays diagnosis results in text; voice output planned for
+
 ---
 
 ## The Rest of the Incomplete Phases can be found in `PROJECT_PHASES.md`
 
 ## 📄 Reference
 - See `PROJECT_PHASES.md` for the full MVP plan and phase breakdown.
-- This file is up to date as of the latest backend/main.py and project structure. 
+- This file is up to date as of the latest backend/main.py, frontend, and project structure. 

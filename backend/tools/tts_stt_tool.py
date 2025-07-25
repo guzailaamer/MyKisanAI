@@ -15,10 +15,15 @@ import os
 import base64
 from pydub import AudioSegment
 from pydub.utils import which
-AudioSegment.converter = "/usr/local/bin/ffmpeg"
+from pathlib import Path
+AudioSegment.converter = os.getenv("FFMPEG_PATH")#"/usr/local/bin/ffmpeg"
 import io
 import time
 from tempfile import NamedTemporaryFile
+
+# Create temp directory in your project
+TMP_DIR = Path(__file__).parent.parent / "tmp"
+TMP_DIR.mkdir(exist_ok=True)
 
 def transcribe_audio(audio_bytes, language="unknown"):
     api_key = os.getenv("SARVAM_API_KEY")
@@ -26,50 +31,83 @@ def transcribe_audio(audio_bytes, language="unknown"):
         raise ValueError("SARVAM_API_KEY not set in environment variables")
     client = SarvamAI(api_subscription_key=api_key)
     # Save audio_bytes to a temp file (Sarvam SDK expects a file object)
-    with NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
+    with NamedTemporaryFile(suffix=".wav", dir=TMP_DIR, delete=False) as tmp:
         tmp.write(audio_bytes)
         tmp.flush()
-        # Check audio duration using pydub
-        audio = AudioSegment.from_file(tmp.name)
-        duration_sec = audio.duration_seconds
-        if duration_sec <= 30:
-            with open(tmp.name, "rb") as audio_file:
-                response = client.speech_to_text.transcribe(
-                    file=audio_file,
-                    model="saarika:v2.5",
-                    language_code=language
-                )
+        tmp.close()
+
+        def process_response(response):
+            # Extract text from response
             if hasattr(response, "text") and response.text:
-                return str(response.text)
+                text = str(response.text)
             elif hasattr(response, "transcript") and response.transcript:
-                return str(response.transcript)
+                text = str(response.transcript)
+            elif hasattr(response, "translated_text"):
+                # Handle TranslationResponse objects
+                text = str(response.translated_text)
             else:
-                return str(response)
-        else:
-            # Split audio into <=29s chunks and transcribe each
-            chunks = []
-            for i, chunk in enumerate(audio[::29000]):  # 29s chunks (29000ms)
-                chunk_file = NamedTemporaryFile(suffix=".wav", delete=False)
-                chunk.export(chunk_file.name, format="wav")
-                chunks.append(chunk_file.name)
-            full_transcript = []
-            for idx, chunk_path in enumerate(chunks):
-                with open(chunk_path, "rb") as audio_file:
-                    try:
-                        response = client.speech_to_text.transcribe(
-                            file=audio_file,
-                            model="saarika:v2.5",
-                            language_code=language
-                        )
-                        if hasattr(response, "text") and response.text:
-                            full_transcript.append(str(response.text))
-                        elif hasattr(response, "transcript") and response.transcript:
-                            full_transcript.append(str(response.transcript))
-                        else:
-                            full_transcript.append(str(response))
-                    except Exception as e:
-                        print(f"Error with chunk {chunk_path}: {e}")
-            return " ".join(full_transcript).strip()
+                text = str(response)
+                
+            # Detect if text contains non-ASCII characters (likely non-English)
+            if any(ord(char) > 127 for char in text):
+                print(f"Detected non-English text, translating to English: {text[:100]}...")
+                # Translate to English (using your existing translate_text function)
+                translated = translate_text(text, source_lang="auto", target_lang="en")
+                # Extract string from translation response
+                if hasattr(translated, "translated_text"):
+                    text = str(translated.translated_text)
+                else:
+                    text = str(translated)
+                
+            return text
+
+        try:
+            # Check audio duration using pydub
+            audio = AudioSegment.from_file(tmp.name)
+            duration_sec = audio.duration_seconds
+            if duration_sec <= 30:
+                with open(tmp.name, "rb") as audio_file:
+                    response = client.speech_to_text.transcribe(
+                        file=audio_file,
+                        model="saarika:v2.5",
+                        language_code=language
+                    )
+                if hasattr(response, "text") and response.text:
+                    return process_response(response.text)
+                elif hasattr(response, "transcript") and response.transcript:
+                    return process_response(response.transcript)
+                else:
+                    return process_response(response)
+            else:
+                # Split audio into <=29s chunks and transcribe each
+                chunks = []
+                for i, chunk in enumerate(audio[::29000]):  # 29s chunks (29000ms)
+                    chunk_file = NamedTemporaryFile(suffix=".wav", delete=False)
+                    chunk.export(chunk_file.name, format="wav")
+                    chunks.append(chunk_file.name)
+                full_transcript = []
+                for idx, chunk_path in enumerate(chunks):
+                    with open(chunk_path, "rb") as audio_file:
+                        try:
+                            response = client.speech_to_text.transcribe(
+                                file=audio_file,
+                                model="saarika:v2.5",
+                                language_code=language
+                            )
+                            if hasattr(response, "text") and response.text:
+                                full_transcript.append(process_response(response.text))
+                            elif hasattr(response, "transcript") and response.transcript:
+                                full_transcript.append(process_response(response.transcript))
+                            else:
+                                full_transcript.append(process_response(response))
+                        except Exception as e:
+                            print(f"Error with chunk {chunk_path}: {e}")
+                return " ".join(full_transcript).strip()
+        finally:
+            # Clean up temp file
+            if os.path.exists(tmp.name):
+                os.remove(tmp.name)
+
 
 def normalize_lang_code(lang):
     # Accepts 'en', 'hi', 'te', 'kn', 'en-IN', etc. Returns BCP-47 code.
@@ -201,3 +239,5 @@ def synthesize_speech(response_text, language="en-IN", translate=False, source_l
     else:
         final_audio = b""
     return {"audio": final_audio, "translated_text": translated_text, "response_text": response_text}
+
+
