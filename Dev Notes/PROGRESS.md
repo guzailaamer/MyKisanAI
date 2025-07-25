@@ -37,6 +37,16 @@ This file summarizes the current high-level progress of the MyKisanAI project. U
   - Response structure defined for disease identification and remedy suggestions.
   - Frontend displays diagnosis results in text; voice output planned for
 
+- **STT/TTS Voice Support**
+  - Sarvam AI integration for STT/TTS
+  - Multi-language support
+  - Auto-translation for non-English input
+  - Cross-platform FFmpeg configuration
+
+- **Market Advisory Tool**
+  - Integration with Government Mandi Price API
+  - Market data aggregation
+  - Rate limiting implementation
 ---
 
 ## The Rest of the Incomplete Phases can be found in `PROJECT_PHASES.md`
