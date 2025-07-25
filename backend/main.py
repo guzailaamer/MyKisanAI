@@ -8,10 +8,10 @@ import os
 import base64
 
 # ─── Import tool stubs ──────────────────────────────────────────────────────────
-from tools.crop_diagnosis_tool import diagnose_crop
-from tools.market_advisory_tool import get_market_trend
-from tools.scheme_navigator_tool import answer_scheme_query
-from tools.tts_stt_tool import synthesize_speech, transcribe_audio
+from backend.tools.crop_diagnosis_tool import diagnose_crop
+from backend.tools.market_advisory_tool import get_market_trend
+from backend.tools.scheme_navigator_tool import answer_scheme_query
+from backend.tools.tts_stt_tool import synthesize_speech, transcribe_audio
 
 # Load environment variables from .env file
 load_dotenv()

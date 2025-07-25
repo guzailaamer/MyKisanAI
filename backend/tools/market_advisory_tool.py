@@ -17,8 +17,7 @@ from pathlib import Path
 
 def get_market_trend_from_csv(crop_name, location=None):
     """Get market trend from CSV file"""
-    # df = load_csv_data()
-    df = pd.read_csv("../GOV_MANDI_PRICES_CSV.csv")  # Adjust path as needed
+    df = pd.read_csv("backend/tools/data/GOV_MANDI_PRICES_CSV.csv")  # Adjust path as needed
     if df is None:
         return {"error": "No data source available"}
     
