@@ -11,6 +11,7 @@ export default defineConfig({
       '/subsidy_query': 'http://localhost:8000',
       '/tts': 'http://localhost:8000',
       '/stt': 'http://localhost:8000',
+      '/conversations': 'http://localhost:8000',
       // Add other endpoints as needed
     },
   },
