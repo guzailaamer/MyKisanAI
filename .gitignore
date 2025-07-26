@@ -75,3 +75,7 @@ Dockerfile
 
 # Environment
 venv
+
+# Python cache files
+*.pyc
+__pycache__
