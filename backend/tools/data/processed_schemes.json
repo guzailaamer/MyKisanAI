@@ -1,0 +1,76 @@
+{
+  "schemes": [
+    {
+      "title": "Central Sector Scheme of financing facility under ‘Agriculture Infrastructure Fund’",
+      "description": "The scheme aims to mobilize a medium - long term debt financing facility for investment in viable projects relating to post-harvest management Infrastructure and viable farming assets through incentives and financial support. It was announced on 15.05.2020, with ₹1 lakh crore Agri Infrastructure Fund for farm-gate infrastructure for farmers. Financing facility of ₹ 1,00,000 crore will be provided for funding Agriculture Infrastructure Projects at farm-gate & aggregation points Primary Agricultural Cooperative Societies, Farmers Producer Organizations, Agriculture entrepreneurs, Start-ups, etc.",
+      "eligibility": "Primary Agricultural Cooperative Societies, Farmers Producer Organizations, Agriculture entrepreneurs, Start-ups, APMCs, etc.",
+      "benefits": "Financial support for investment in viable projects relating to post-harvest management Infrastructure and viable farming assets.",
+      "application_process": "Not mentioned in the document excerpt.",
+      "documents_required": "Not mentioned in the document excerpt.",
+      "source_file": "AIF-Operational-Guidelines.pdf"
+    },
+    {
+      "title": "National Food Security Mission (NFSM)",
+      "description": "The National Food Security Mission (NFSM) aims to increase the production of rice, pulses, and coarse cereals through area expansion and productivity enhancement in a sustainable manner. It also focuses on restoring soil fertility and productivity, and enhancing farm-level economy.",
+      "eligibility": "Farmers in the identified districts of the State.",
+      "benefits": "Increased production of rice, pulses, and coarse cereals; restored soil fertility and productivity; enhanced farm-level economy.",
+      "application_process": "Not explicitly mentioned in the document.",
+      "documents_required": "Not explicitly mentioned in the document.",
+      "source_file": "NFSM-Guidelines.pdf"
+    },
+    {
+      "title": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+      "description": "A Central Sector Scheme to provide income support to all landholding farmers' families in the country to supplement their financial needs for procuring various inputs related to agriculture and allied activities as well as domestic needs. Under the Scheme, the entire financial liability towards transfer of benefit to targeted beneficiaries will be borne by Government of India.",
+      "eligibility": "All landholding farmers' families, which have cultivable landholding in their names are eligible to get benefit under the scheme",
+      "benefits": "Financial benefit of Rs.6000 per annum per family payable in three equal installments of Rs.2000 each, every four months.",
+      "application_process": "Not mentioned in the document.",
+      "documents_required": "Not mentioned in the document.",
+      "source_file": "PM-KISAN-FAQ.pdf"
+    },
+    {
+      "title": "Pradhan Mantri Kisan Maan-dhan Yojana (PM-KMY)",
+      "description": "An old age pension scheme for all land holding Small and Marginal Farmers (SMFs) in the country. It is a voluntary and contributory pension scheme for the entry age group of 18 to 40 years with a provision of payment of Rs. 3000/- monthly pension on attaining the age of 60 years, subject to certain exclusion criteria.",
+      "eligibility": "All Small and Marginal Farmers having cultivable landholding upto 2 hectares falling in the age group of 18 to 40 years, whose names appear in the land records of States/UTs as on 01.08.2019 are eligible. Exclusions include those covered under other statutory social security schemes (NPS, ESIC, EPFO), those who opted for PM-SYM or PM-LVM, institutional land holders, former and present holders of constitutional posts, Ministers/State Ministers, Members of Lok Sabha/Rajya Sabha/State Legislative Assemblies/State Legislative Councils, Mayors of Municipal Corporations, Chairpersons of District Panchayats, and all serving or retired officers and employees.",
+      "benefits": "Minimum assured pension of Rs. 3000/- per month after attaining the age of 60 years. Family pension: if the subscriber dies, the spouse shall be entitled to receive 50% of the pension received by the beneficiary. If a beneficiary has given regular contribution and died of any cause (before age of 60 years), his/her spouse will be entitled to join and continue the scheme subsequently by payment of regular contribution or exit the scheme.",
+      "application_process": "Not mentioned in the document",
+      "documents_required": "Not mentioned in the document",
+      "source_file": "PM-KMY-FAQs.pdf"
+    },
+    {
+      "title": "Pradhan Mantri Kisan Maan Dhan Yojana (PM-KMY)",
+      "description": "An old age pension scheme for all land holding Small and Marginal Farmers (SMFs) in the country. It is a voluntary and contributory pension scheme for the entry age group of 18 to 40 years, effective from the 9th August, 2019.",
+      "eligibility": "All land holding Small and Marginal Farmers (SMFs) in the country, within the entry age group of 18 to 40 years. Farmers falling within the purview of the exclusion criteria are not eligible.",
+      "benefits": "An assured monthly pension of Rs. 3000/- to all land holding Small and Marginal Farmers (SMFs), whether male or female, on their attaining the age of 60 years.",
+      "application_process": "Not specified in the provided document.",
+      "documents_required": "Not specified in the provided document.",
+      "source_file": "PM-KMY-Operational-Guidelines.pdf"
+    },
+    {
+      "title": "Pradhan Mantri Rashtriya Krishi Vikas Yojana (PM-RKVY)",
+      "description": "Operational Guidelines for Pradhan Mantri Rashtriya Krishi Vikas Yojana (PM-RKVY)",
+      "eligibility": "Not explicitly mentioned in the provided text.",
+      "benefits": "Not explicitly mentioned in the provided text.",
+      "application_process": "Not explicitly mentioned in the provided text.",
+      "documents_required": "Not explicitly mentioned in the provided text, but Annexures provide formats for submission of Minutes of SLSC, details of activities/projects, Utilization Certificate, Annual Action Plan for Per Drop More Crop, and Physical/Financial Progress Monitoring Reports.",
+      "source_file": "PM-RKVY-Guidelines.pdf"
+    },
+    {
+      "title": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+      "description": "Operational Guidelines for the Pradhan Mantri Fasal Bima Yojana (PMFBY) effective from Kharif 2023.",
+      "eligibility": "Farmers",
+      "benefits": "Crop insurance coverage against yield loss due to various risks.",
+      "application_process": "Collection of Applications and Premium from Farmers is described in Section 17 (pages 59-69).",
+      "documents_required": "Not explicitly mentioned in the provided text. Refer to section 17: Collection of Applications and Premium from Farmers",
+      "source_file": "PMFBY -Operational-Guidelines.pdf"
+    },
+    {
+      "title": "Rythu Bandhu",
+      "description": "Financial assistance to land-owning farmers in Telangana to support crop investment.",
+      "eligibility": "Land-owning farmers",
+      "benefits": "Investment support for each farmer.",
+      "application_process": "Details regarding the application process are not provided.",
+      "documents_required": "Pattadar passbook, and other relevant documents for verification.",
+      "source_file": "Rythu-Bandhu-Guidelines.pdf"
+    }
+  ]
+}
