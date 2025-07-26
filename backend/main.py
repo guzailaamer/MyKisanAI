@@ -103,3 +103,17 @@ async def stt_endpoint(audio: UploadFile = File(...)):
     audio_bytes = await audio.read()
     transcript = transcribe_audio(audio_bytes)
     return {"transcript": transcript}
+
+# Debug endpoint to check scheme processing
+@app.get("/debug/schemes")
+async def debug_schemes():
+    from tools.scheme_navigator_tool import PDF_DIR, PROCESSED_PATH, load_schemes
+    
+    return {
+        "pdf_directory": str(PDF_DIR.absolute()),
+        "pdf_directory_exists": PDF_DIR.exists(),
+        "pdf_files": [f.name for f in PDF_DIR.glob("*.pdf")] if PDF_DIR.exists() else [],
+        "processed_file": str(PROCESSED_PATH.absolute()),
+        "processed_file_exists": PROCESSED_PATH.exists(),
+        "schemes_count": len(load_schemes(force_refresh=True))
+    }
