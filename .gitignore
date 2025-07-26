@@ -73,5 +73,25 @@ node_modules/
 Dockerfile
 .dockerignore
 
-# Environment
-venv
+# Python cache files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
