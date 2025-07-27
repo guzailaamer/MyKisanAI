@@ -16,6 +16,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Try loading from project root (go up from backend/tools/)
+project_root = Path(__file__).parent.parent.parent
+load_dotenv(project_root / ".env")
+
 # Configure Gemini
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:

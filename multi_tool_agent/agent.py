@@ -3,6 +3,10 @@ import base64
 import os
 from zoneinfo import ZoneInfo
 from google.adk.agents import Agent
+from dotenv import load_dotenv
+
+# Load environment variables from the correct location
+load_dotenv() 
 
 # Import your original tools
 import sys
