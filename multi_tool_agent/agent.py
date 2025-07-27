@@ -103,7 +103,7 @@ def get_government_schemes(question: str) -> dict:
 # Create the ADK agent - this should handle multimodal input
 root_agent = Agent(
     name="farmer_assistant_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-pro",
     description=(
         "AI assistant for Indian farmers that can analyze crop images, provide market information, and explain government schemes"
     ),
